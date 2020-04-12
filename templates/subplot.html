@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div id="graph" style="height: 1000px;"></div>
+
+{% endblock %}
+
+
+{% block js %}
+
+
+    <script>
+        var graphs = {{graphJSON | safe}};
+
+        var layout = {
+                    grid: {rows: 5, columns: 2, pattern: 'independent'},
+                    };
+
+        console.log(graphs)
+
+            Plotly.plot('graph',
+                        graphs,
+                        layout
+                        );
+    </script>
+
+{% endblock %}
