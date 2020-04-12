@@ -1,34 +1,25 @@
-<!doctype html>
-<html>
+{% extends 'layout.html' %}
 
-<head>
-</head>
+{% block body %}
 
-<body>
+<div id="graph" class="gr-sn"></div>
 
-    
-    <div id="graph"></div>
+{% endblock %}
 
-    <!-- D3.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <!-- Plotly.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.33.1/plotly.min.js"></script>
+{% block js %}
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        var graphs = {{graphJSON | safe}};
+    var graphs = {{graphJSON | safe}};
 
 
-        console.log(graphs[0].data)
-        for(var i in graphs) {
-            Plotly.plot('graph',
-                        graphs[i].data
-                        );
-        }
+    console.log(graphs[0].data)
+    for(var i in graphs) {
+        Plotly.plot('graph',
+                    graphs[i].data
+                    );
+    }
 
-    </script>
-</body>
+</script>
 
-</html>
+{% endblock %}

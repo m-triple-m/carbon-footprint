@@ -52,7 +52,7 @@ def plot1():
     for desc, group in car.getEnergySources():
         graphs.append(
             dict(
-                data = [dict(x = group.index, y = group.Value.values)]
+                data = [dict(x = group.index, y = group.Value.values, name = desc)]
             )
         )
 
@@ -71,7 +71,7 @@ def sub():
     for index, (desc, group) in enumerate(car.getEnergySources()):
         graphs.append(
             dict(
-                dict(x = group.index, y = group.Value.values, xaxis = f'x{index+1}', yaxis = f'y{index+1}')
+                dict(x = group.index, y = group.Value.values, name = desc, xaxis = f'x{index+1}', yaxis = f'y{index+1}')
             )
         )
 
