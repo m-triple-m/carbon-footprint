@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div id="graph" class="gr-sn"></div>
+
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+
+    var graphs = {{graphJSON | safe}};
+
+
+    console.log(graphs[0].data)
+    for(var i in graphs) {
+        Plotly.plot('graph',
+                    graphs[i].data
+                    );
+    }
+
+</script>
+
+{% endblock %}

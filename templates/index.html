@@ -1,35 +1,35 @@
-<!doctype html>
-<html>
+{% extends 'layout.html' %}
 
-<head>
-</head>
+{% block body %}
 
-<body>
+<div class="container-fluid">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-3">Carbon Footprint</h1>
+            <p class="lead">CO2 & GHG emission Data Analysis</p>
+            <hr class="my-2">
+            <p class="h3">All Plots</p>
+            <p class="lead mt-5">
+                <a class="btn btn-primary btn-lg btn-block col-5" href="/plot1">Carbon Emissions per Energy Source</a>
+                <a class="btn btn-primary btn-lg btn-block col-5" href="/subplots">Carbon Emissions individual plots</a>
+                <a class="btn btn-primary btn-lg btn-block col-5" href="/bar">CO2 Emissions of Electric Power Sector</a>
+                <a class="btn btn-primary btn-lg btn-block col-5" href="/monthly">Monthly trends in emission</a>
+                <a class="btn btn-primary btn-lg btn-block col-5" href="/trend">Different trends in Emissions</a>
+                <!-- <a class="btn btn-primary btn-lg btn-block col-5" href="/plot1">Jumbo action name</a> -->
+            </p>
 
-    {% for id in ids %}
-        <h3>{{id}}</h3>
-        <div id="{{id}}"></div>
-    {% endfor %}
+        </div>
+    </div>
+</div>
 
-    <!-- D3.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <!-- Plotly.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.33.1/plotly.min.js"></script>
+{% endblock %}
 
-    <script type="text/javascript">
+{% block js %}
 
-        var graphs = {{graphJSON | safe}};
-        var ids = {{ids | safe}};
+<script type="text/javascript">
 
-        for(var i in graphs) {
-            Plotly.plot(ids[i], // the ID of the div, created above
-                        graphs[i].data,
-                        graphs[i].layout || {});
-        }
+    
 
-    </script>
-</body>
+</script>
 
-</html>
+{% endblock %}
