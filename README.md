@@ -1,5 +1,5 @@
-# Plotly.js-Flask-Example
-A simple plotly.js example served with flask
+# Carbon Footprint
+Data Ananlysis of CO2 and GHG Emissions from various industries
 
 ## Usage
 
