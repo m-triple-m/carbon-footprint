@@ -8,6 +8,6 @@ $ python app.py
  * Running on http://localhost:5000/ (Press CTRL+C to quit)
  * Restarting with stat
 ```
-
+## Screenshots
 ![screenshot of the graphs](https://github.com/m-triple-m/carbon-footprint/blob/master/screens/screen1.png)
 ![screenshot of the graphs](https://github.com/m-triple-m/carbon-footprint/blob/master/screens/screen2.png)
