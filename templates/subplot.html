@@ -2,7 +2,24 @@
 
 {% block body %}
 
-<div id="graph" style="height: 1000px;"></div>
+<div class="container">
+    <div class="card main-card mt-5">
+        <div class="card-body">
+            <p class="h2">Carbon Emissions from various Major Sectors</p>
+            <p class="text-muted">Individual subgraphs</p>
+            <hr>
+            <p style="font-size: larger;">Here we can clearly see that Coal Electric Power Sector has the greatest impact on allover Carbon Emissions.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <div id="graph" style="height: 100rem;"></div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
@@ -14,7 +31,7 @@
         var graphs = {{graphJSON | safe}};
 
         var layout = {
-                    grid: {rows: 5, columns: 2, pattern: 'independent'},
+                    grid: {rows: 9, columns: 1, pattern: 'independent'},
                     };
 
         console.log(graphs)

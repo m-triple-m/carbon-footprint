@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from processData import Carbon
+from countryData import CountryData
 import json
 import plotly
 
@@ -8,11 +9,13 @@ import numpy as np
 
 app = Flask(__name__)
 app.debug = True
-car = Carbon('dataset.csv')
+car = Carbon('datasets/dataset.csv')
+con = CountryData('datasets/emission_data.csv')
 
 @app.route('/')
 @app.route('/home')
 def index():
+    
     return render_template('index.html')
 
 @app.route('/plot1')
@@ -73,7 +76,7 @@ def monthly():
 
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return render_template('plot2.html', graphJSON = graphJSON)
+    return render_template('monthly.html', graphJSON = graphJSON)
 
 @app.route('/trend')
 def trends():
@@ -91,6 +94,97 @@ def trends():
 
     return render_template('trends.html', graphJSON = graphJSON)
 
+@app.route('/country')
+def CountryPlot():
+    graphs = []
+
+    df = con.getCountrydata()
+    for column in df.columns[6:]:
+        graphs.append(
+            dict(
+                data = [dict(x = df['Country'], y = df[column], name = column)]
+            )
+        )
+
+    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('trends.html', graphJSON = graphJSON)
+
+@app.route('/world')
+def worldPlot():
+    graphs = []
+
+    df = con.getCountrydata()
+    graphs.append(
+        dict(
+            data = [dict(x = df.columns[50:], y = df.loc[df['Country'] == 'World'][df.columns[50:]].values.squeeze())]
+        )
+    )
+
+    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('trends.html', graphJSON = graphJSON)
+
+@app.route('/map')
+def MapPlot():
+    
+    plot_df = con.getCountrydata()
+
+    first_year = 1960
+    last_year = 2011
+    number_of_steps = int(2011 - 1960)
+
+    # data is a list that will have one element for now, the first element is the value from the first year column we are interested in.
+    data = [dict(type='choropleth',
+                locations = plot_df['country_code'].astype(str),
+                z=plot_df[str(first_year)].astype(float))]
+
+    # next, we copy the data from the first cell, append it to the data list and set the data to the value contained in the year column of the dataframe.
+    for i in range(number_of_steps):
+        data.append(data[0].copy())
+        index = str(first_year + i + 1)
+        data[-1]['z'] = plot_df[index]
+
+    graphJSON = json.dumps([dict(data = data)], cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('map.html', graphJSON = graphJSON)
+
+
+@app.route('/topemitter')
+def topEmitters():
+    
+    graphs = []
+
+    df = con.getTopData(years = 10)
+
+    data = df.sort_values(by = 'Total', ascending=False)[:21]
+
+    graphs.append(
+            dict(x = data['Country'], y = data['Total'], type = 'bar')
+    )
+
+    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('topemit.html', graphJSON = graphJSON)
+
+
+@app.route('/year')
+def yearWise():
+    
+    graphs = []
+
+    df = con.getCountrydata()
+
+    data = df.sort_values(by = '2017', ascending=False)[:41]
+
+    graphs.append(
+            dict(x = data['Country'], y = data['2017'], type = 'bar')
+    )
+
+    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('year.html', graphJSON = graphJSON)
+    
 
 if __name__ == '__main__':
     app.run(debug = True)
