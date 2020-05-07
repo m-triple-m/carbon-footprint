@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from processData import Carbon
 from countryData import CountryData
 import json
@@ -99,7 +99,7 @@ def CountryPlot():
     graphs = []
 
     df = con.getCountrydata()
-    for column in df.columns[6:]:
+    for column in df.columns[-20:]:
         graphs.append(
             dict(
                 data = [dict(x = df['Country'], y = df[column], name = column)]
@@ -174,6 +174,7 @@ def yearWise():
     graphs = []
 
     df = con.getCountrydata()
+    
 
     data = df.sort_values(by = '2017', ascending=False)[:41]
 
@@ -184,6 +185,33 @@ def yearWise():
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
 
     return render_template('year.html', graphJSON = graphJSON)
+
+@app.route('/devdata')
+def Dev():
+
+    graphs = []
+    df = con.getCountrydata()
+    print(df.columns)
+
+    us = df.loc[df['Country'] == 'United States']
+    india = df.loc[df['Country'] == 'India']
+
+    graphs.append(
+            dict(x = us.columns[2:-1],  y = us.iloc[0][2:-1].values, fill = 'tozeroy', name = "USA")
+    )
+    graphs.append(
+            dict(x = india.columns[2:-1],  y = india.iloc[0][2:-1].values, fill = 'tozeroy', name = "INDIA")
+    )
+
+    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return jsonify(graphJSON)
+
+@app.route('/dev')
+def devpage():
+
+    return render_template('dev.html')
+
     
 
 if __name__ == '__main__':

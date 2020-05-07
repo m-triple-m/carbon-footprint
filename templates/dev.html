@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <div class="card main-card mt-5">
+        <div class="card-body">
+            <p class="h2">Scatter chart showing the Comparison of Carbon Emissions</p>
+            <hr>
+            <p style="font-size: larger;">This scatter chart explains the difference between the Carbon Emissions of developed and developing countries.</p>
+            <br>
+            <div class="row">
+                <div class="col-6">
+                    <select name="" id="" class="form-control">
+                        <option value="india">INDIA</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <select name="" id="" class="form-control">
+                        <option value="india">USA</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <div id="graph" class="gr-sn"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+
+
+    <script>
+        $(document).ready(() => {
+            var graphs;
+            $.get('/devdata', {} ,(data) => {
+                console.log(data);
+                graphs = JSON.parse(data);
+
+                console.log(graphs[0])
+
+                Plotly.plot('graph',
+                            [graphs[0]]
+                            );
+
+                            Plotly.plot('graph',
+                            [graphs[1]]
+                            );
+            })
+
+            
+        });
+    </script>
+
+{% endblock %}
